@@ -6,12 +6,12 @@
 import java.io.*;	//Input-output classes.
 import java.util.*;
 
-public class Main {
+class Main {
     // Adds two words and returns the result
-    public static String add_words(String word_1, String word_2){
-        int word_length = 0, letter_sum = 0, carry =0;
+    private static String add_words(String word_1, String word_2){
+        int word_length, letter_sum, carry=0;
         String result = "";
-        String temp = "";
+        String temp;
 
         // Pad a word if needed
         if (word_1.length() > word_2.length()){
@@ -50,8 +50,7 @@ public class Main {
     }
     public static void main(String[] args)throws IOException {
         BufferedReader inf = null;
-        BufferedReader outf = null;
-        String add_sum = "", result_string = "";
+        String add_sum, result_string;
         int word_count = 0;
 
         // Open input file and read words to a list
@@ -61,9 +60,9 @@ public class Main {
             e.printStackTrace();
         }
         String str;
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         try{
-            while((str = inf.readLine()) != null){
+            while((str = inf != null ? inf.readLine() : null) != null){
                 list.add(str);
             }
         }catch(IOException e) {
@@ -71,7 +70,7 @@ public class Main {
         }
 
         // Hash the words for speed
-        Set<String> set = new HashSet<String>(list);
+        Set<String> set = new HashSet<>(list);
 
         // Open file output
         File file = new File("word_sum_results.txt");
@@ -80,8 +79,8 @@ public class Main {
 
         // start timer and start main loop that iterates through the entire dictionary.
         final long startTime = System.currentTimeMillis();
-        for (int k =0; k < list.size(); k++){   // list.size()
-            for (int j =k; j < list.size();j++){   //list.size()
+        for (int k =0; k < list.size(); k++){
+            for (int j =k; j < list.size();j++){
                 add_sum = add_words(list.get(k), list.get(j));
                 if (set.contains(add_sum)){
                     word_count ++;
@@ -95,7 +94,8 @@ public class Main {
         final long endTime = System.currentTimeMillis();
         final long elapsed = endTime-startTime;
         System.out.print("Execution time is " + (elapsed/1000d) + " seconds");
-        inf.close(); // close input file
-        bw.close(); // close output file
+        assert inf != null;
+        inf.close();
+        bw.close();
     }
 }
